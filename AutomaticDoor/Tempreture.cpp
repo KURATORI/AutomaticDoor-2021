@@ -7,9 +7,11 @@ Tempreture::Tempreture(){
 }
 
 float Tempreture::getObjectTempreture(){
+  tempreture_object = mlx.readObjectTempC();
   return tempreture_object;
 }
 
 float Tempreture::getAmbientTempreture(){
+  tempreture_ambient = mlx.readAmbientTempC();
   return tempreture_ambient;
 }
