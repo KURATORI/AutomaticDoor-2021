@@ -8,19 +8,19 @@
   
   #endif
   
-class Tempreture{
+class Temperature{
   private:
-    float tempreture_object=0;
-    float tempreture_ambient=0;
+    float temperature_object=0;
+    float temperature_ambient=0;
     
   public:
     
-    Tempreture();
+    Temperature();
     Adafruit_MLX90614 mlx;
 
     
-    float getObjectTempreture();
-    float getAmbientTempreture();
+    float getObjectTemperature();
+    float getAmbientTemperature();
 };
 
 #endif
