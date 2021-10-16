@@ -1,5 +1,6 @@
 #include<Arduino.h>
 #include"Temperature.h"
+#define PIR_PIN 7
 
 Adafruit_MLX90614 mlx = Adafruit_MLX90614();
 
@@ -10,7 +11,12 @@ void setup() {
 }
 
 void loop() {
-  
+
+  if(digitalRead(PIR_PIN) == HIGH)Serial.println("HIGH");
+  else Serial.println("Low");
+
+  //温度センサの実行プログラム
+  /*
   Temperature T;
   Serial.print("Ambient = ");
   Serial.print(T.getObjectTemperature()); 
@@ -20,5 +26,5 @@ void loop() {
   Serial.println("*C");
   Serial.println();
   delay(1000);
-  
+  */
 }
