@@ -4,6 +4,8 @@
   #ifndef ADAFRUIT_MLX90614
   #define ADAFRUIT_MLX90614
   #include"src/libraries/Adafruit_MLX90614_Library/Adafruit_MLX90614.h"
+
+  
   #endif
   
 class Tempreture{
@@ -12,8 +14,11 @@ class Tempreture{
     float tempreture_ambient=0;
     
   public:
+    
     Tempreture();
     Adafruit_MLX90614 mlx;
+
+    
     float getObjectTempreture();
     float getAmbientTempreture();
 };
