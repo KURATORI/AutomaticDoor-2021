@@ -28,12 +28,12 @@ void setup() {
 void loop() {
 
   //超音波センサ実行プログラム
+  /*
   Usound US(ECHO_PIN, TRIG_PIN);
   Serial.print("distance: ");
   Serial.print(US.echoCatch());
   Serial.println("mm");
-  
-
+  *
   
   //モータの実行プログラム
   /*
