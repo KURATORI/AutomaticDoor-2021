@@ -1,5 +1,9 @@
 #ifndef INCLUDE_MOTOR
 #define INCLUDE_MOTOR
+  #ifndef INCLUDE_ARDUINO
+  #define INCLUDE_ARDUINO
+  #include <Arduino.h>
+  #endif
 
 class Motor{
   private:
@@ -13,8 +17,8 @@ class Motor{
     
   public:
     Motor(int pin1, int pin2, int pin3);
-    void rotateDirection(bool rotdirection);
-    void motorSpeed(int rps); 
+    void rotateDirection(bool rotdirection); //回転方向の設定
+    void motorSpeed(int rps); //回転速度の設定
     
     // モーターの回転速度と方向を指定し、回す
     void rotateMotor(bool rotdirection, int rps, float meter);

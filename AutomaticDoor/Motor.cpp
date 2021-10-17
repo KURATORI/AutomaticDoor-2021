@@ -1,8 +1,4 @@
 #include"Motor.h"
-  #ifndef INCLUDE_ARDUINO
-  #define INCLUDE_ARDUINO
-  #include <Arduino.h>
-  #endif
   
 Motor::Motor(int pin1, int pin2, int pin3){
   pin_outpulse = pin1;
