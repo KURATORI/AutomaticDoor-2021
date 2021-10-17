@@ -7,9 +7,11 @@
 
 class Motor{
   private:
-    int pin_outpulse;           //パルスによってモーターの回転量を制御するピン番号
-    int pin_rotdirection;       //回転方向制御のピン番号
-    int pin_inpulse;            //モーターから一定の回転によって送られてくるパルスのピン番号
+    int inpulse_pin;            //モーターから一定の回転によって送られてくるパルスのピン番号
+    int rotdirection_pin;       //回転方向制御のピン番号
+    int outpulse_pin;           //パルスによってモーターの回転量を制御するピン番号
+    
+    
     
     bool rotdirection;          //回転方向
     float rps;                 //モーターの回転速度[r/s]

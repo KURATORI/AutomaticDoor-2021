@@ -1,11 +1,13 @@
 #include<Arduino.h>
 #include"Temperature.h"
 #include"Motor.h"
+#include"Usound.h"
 #define PIR_PIN 0
 #define MOT_INPULSE_PIN 1
 #define MOT_ROTDIRECTION_PIN 2
 #define MOT_OUTPUlSE_PIN 3
-
+#define ECHO_PIN 4
+#define TRIG_PIN 5
 
 Adafruit_MLX90614 mlx = Adafruit_MLX90614();
 
@@ -14,6 +16,9 @@ void setup() {
   pinMode(MOT_INPULSE_PIN, INPUT);
   pinMode(MOT_ROTDIRECTION_PIN, OUTPUT);
   pinMode(MOT_OUTPUlSE_PIN, OUTPUT);
+  pinMode(ECHO_PIN, INPUT);
+  pinMode(TRIG_PIN, OUTPUT);
+  
   
   Serial.begin(9600);
   Serial.println("test");  
@@ -22,14 +27,23 @@ void setup() {
 
 void loop() {
 
-  //モータの実行プログラム
+  //超音波センサ実行プログラム
+  Usound US(ECHO_PIN, TRIG_PIN);
+  Serial.print("distance: ");
+  Serial.print(US.echoCatch());
+  Serial.println("mm");
   
-  Motor M(MOT_OUTPUlSE_PIN,MOT_ROTDIRECTION_PIN,MOT_INPULSE_PIN);
+
+  
+  //モータの実行プログラム
+  /*
+  Motor M(MOT_INPULSE_PIN, MOT_ROTDIRECTION_PIN, MOT_OUTPUlSE_PIN);
   bool rotdir = 1;
   float rps = 1000;
   float meter = 100;
   M.rotateMotor(rotdir, rps, meter);
-  
+  */
+ 
   //PIRセンサの実行プログラム
   /*
   if(digitalRead(PIR_PIN) == HIGH)Serial.println("HIGH");

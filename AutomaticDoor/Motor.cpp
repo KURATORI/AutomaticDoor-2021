@@ -1,9 +1,10 @@
 #include"Motor.h"
   
 Motor::Motor(int pin1, int pin2, int pin3){
-  pin_outpulse = pin1;
-  pin_rotdirection = pin2;
-  pin_inpulse = pin3; 
+  inpulse_pin = pin3;
+  rotdirection_pin = pin2;
+  outpulse_pin = pin1;
+   
 }
 
 void Motor::rotateDirection(bool rotdirection){
@@ -24,21 +25,22 @@ void Motor::rotateMotor(bool rotdirection, int rps, float meter){
   long inpulsetime = 999999;              //meterから求められるはずだが今はよくわからない
   long outpulsetime = 999999;              //meterから求められるはずだが今はよくわからない  
   
-  digitalWrite(pin_rotdirection, rotdirection);
+  digitalWrite(rotdirection_pin, rotdirection);
 
   long temp = 0;
   while(true){
-    if(digitalRead(pin_inpulse)){
+    if(digitalRead(inpulse_pin)){
       temp++;
       if(inpulsetime < temp){
         finished = true;        
       }
     }
-    
+
+    //1回転1.8°
     if(count < outpulsetime && !finished){
-      digitalWrite(pin_outpulse,HIGH);
+      digitalWrite(outpulse_pin,HIGH);
       delay(delaytime);
-      digitalWrite(pin_outpulse,LOW);
+      digitalWrite(outpulse_pin,LOW);
       delay(delaytime);
       }
     count++;
