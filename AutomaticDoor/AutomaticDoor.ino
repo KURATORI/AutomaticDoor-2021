@@ -37,7 +37,7 @@ void loop() {
   
   //モータの実行プログラム
   /*
-  Motor M(MOT_INPULSE_PIN, MOT_ROTDIRECTION_PIN, MOT_OUTPUlSE_PIN);
+  Motor M(MOT_INPULSE_PIN, MOT_ROTDIRECTION_PIN, MOT_OUTPULSE_PIN);
   bool rotdir = 1;
   float rps = 1000;
   float meter = 100;
