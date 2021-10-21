@@ -28,14 +28,48 @@ void Motor::rotate(bool rotdirection, float centimeter_per_sec, float movingdist
 
   digitalWrite(rotdirection_pin,this->rotdirection);
 
-  float cmperstep = 8/200; //(1周あたり)8cm/200ステップ
-  float delaytime = 0.01*(cmperstep/movingdistance)/2; //1ステップでの移動距離/1ステップに掛かる時間 = 1ステップの移動速度
-  float steps = movingdistance/cmperstep; //必要ステップ数
-  for(int i=0;i<steps;i++){
+  float cmperstep = (float)8/3200; //(1周あたり)8cm:3200ステップ
+  double delaytime = cmperstep/centimeter_per_sec/2*1000*1000;//[μs]
+  //double delaytime = (float)0.02/centimeter_per_sec*1000;
+  double steps = movingdistance/cmperstep; //必要ステップ数
+
+  long deltatime=0;
+  for(long i=0;i<steps;i++){
+   
+   /*
+    Serial.println(steps); 
+    
+    Serial.print(" rotdirection: ");
+    Serial.println(this->rotdirection);
+
+    Serial.print(cmperstep);
+    Serial.print(" cmperstep: ");
+
+    Serial.print(" delaytime: ");
+    Serial.print(delaytime);
+    
+    Serial.print("Needstep: ");
+    Serial.println(steps);
+
+    Serial.print(" step: ");
+    Serial.println(i);
+    
+    Serial.print(" moved[cm]: ");
+    
+    Serial.print(i*cmperstep);
+
+    Serial.print(" deltatime: ");
+    deltatime+=delaytime*2;
+    Serial.println(deltatime);
+    */
+    
     digitalWrite(intopulse_pin,HIGH);
-    delay(delaytime);
+    delayMicroseconds(delaytime);
+    //delay(delaytime);
     digitalWrite(intopulse_pin,LOW);
-    delay(delaytime);
+    delayMicroseconds(delaytime);
+    //delay(delaytime);
+    
   }
   return;
 }

@@ -24,7 +24,7 @@ void setup() {
   mlx.begin();  //実行しないとデフォルト値が出続ける
 }
 Usound US(ECHO_PIN, TRIG_PIN);
-
+bool y=true;
 void loop() {
 
   //超音波センサ実行プログラム
@@ -35,13 +35,13 @@ void loop() {
   
   
   //モータの実行プログラム
-  /*
+  
   Motor M(MOT_FEEDBACKPULSE_PIN, MOT_ROTDIRECTION_PIN, MOT_INTOPULSE_PIN);
-  bool rotdir = 0;
-  float rps = 100;
-  float meter = 100;
-  M.rotate(rotdir, rps, meter);
-  */
+  if(y){
+  M.rotate(1,10,100);
+  y=false;
+  }
+  
   /*
     Serial.println(10);
     digitalWrite(MOT_ROTDIRECTION_PIN,1);
