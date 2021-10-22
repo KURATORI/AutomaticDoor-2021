@@ -62,7 +62,6 @@ void Motor::rotate(bool rotdirection, float centimeter_per_sec, float movingdist
     deltatime+=delaytime*2;
     Serial.println(deltatime);
     */
-    
     digitalWrite(intopulse_pin,HIGH);
     delayMicroseconds(delaytime);
     //delay(delaytime);

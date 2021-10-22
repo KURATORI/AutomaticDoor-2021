@@ -24,22 +24,23 @@ void setup() {
   mlx.begin();  //実行しないとデフォルト値が出続ける
 }
 Usound US(ECHO_PIN, TRIG_PIN);
+Motor M(MOT_FEEDBACKPULSE_PIN, MOT_ROTDIRECTION_PIN, MOT_INTOPULSE_PIN);
 bool y=true;
 void loop() {
 
   //超音波センサ実行プログラム
-  
+  /*
   Serial.print("distance: ");
   Serial.print(US.echoCatch());
   Serial.println("cm");
-  
+  */
   
   //モータの実行プログラム
   
-  Motor M(MOT_FEEDBACKPULSE_PIN, MOT_ROTDIRECTION_PIN, MOT_INTOPULSE_PIN);
+  
   if(y){
-  M.rotate(1,10,100);
-  y=false;
+    M.rotate(1,10,10);
+    y=false;
   }
   
   /*
@@ -62,10 +63,10 @@ void loop() {
   
  
   //PIRセンサの実行プログラム
-  
+  /*
   if(digitalRead(PIR_PIN) == HIGH)Serial.println("HIGH");
   else Serial.println("Low");
-  
+  */
 
   //温度センサの実行プログラム
   /*
