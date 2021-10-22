@@ -11,6 +11,7 @@
 
 Adafruit_MLX90614 mlx = Adafruit_MLX90614();
 
+//aaa
 void setup() {
   pinMode(PIR_PIN, INPUT);
   pinMode(MOT_FEEDBACKPULSE_PIN, INPUT);
