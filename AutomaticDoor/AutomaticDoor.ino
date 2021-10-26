@@ -6,52 +6,60 @@
 #define MOT_FEEDBACKPULSE_PIN 3
 #define MOT_ROTDIRECTION_PIN 4
 #define MOT_INTOPULSE_PIN 5
-#define ECHO_PIN 6
-#define TRIG_PIN 7
-//#define  
-#define BLUE_PIN 9 
-#define GREEN_PIN 10
-#define RED_PIN 11
-//#define
-//#define
+#define DIS_ECHO_PIN 6
+#define DIS_TRIG_PIN 7
+#define PP1_ECHO_PIN 8
+#define PP1_TRIG_PIN 9
+#define PP2_ECHO_PIN 10
+#define PP2_TRIG_PIN 11
+#define LED1_PIN 12
+#define LED2_PIN 13
 
 Adafruit_MLX90614 mlx = Adafruit_MLX90614();
 
+//aaa
 void setup() {
   
   pinMode(PIR_PIN, INPUT);
   pinMode(MOT_FEEDBACKPULSE_PIN, INPUT);
   pinMode(MOT_ROTDIRECTION_PIN, OUTPUT);
   pinMode(MOT_INTOPULSE_PIN, OUTPUT);
-  pinMode(ECHO_PIN, INPUT);
-  pinMode(TRIG_PIN, OUTPUT);
+  pinMode(DIS_ECHO_PIN, INPUT);
+  pinMode(DIS_TRIG_PIN, OUTPUT);
+  pinMode(PP1_ECHO_PIN, OUTPUT);
+  pinMode(PP1_TRIG_PIN, OUTPUT);
+  pinMode(PP2_ECHO_PIN, OUTPUT);
+  pinMode(PP2_TRIG_PIN, OUTPUT);
+  pinMode(LED1_PIN, OUTPUT);
+  pinMode(LED2_PIN, OUTPUT);
     
   Serial.begin(9600);
   Serial.println("test");  
   mlx.begin();  //実行しないとデフォルト値が出続ける
 }
-Usound US(ECHO_PIN, TRIG_PIN);
-bool y=true;
-
-float cmperstep = (float)8/3200;
-float check = (float)1/cmperstep;
-
+Usound DIS_US(DIS_ECHO_PIN, DIS_TRIG_PIN);
+Usound PP1_US(PP1_ECHO_PIN, PP1_TRIG_PIN);
+Usound PP2_US(PP2_ECHO_PIN, PP2_TRIG_PIN);
+Motor M(MOT_FEEDBACKPULSE_PIN, MOT_ROTDIRECTION_PIN, MOT_INTOPULSE_PIN);
+Temperature T;
+//bool y=true;
 void loop() {
-
-  //超音波センサ実行プログラム
   
+  //超音波センサ実行プログラム
+  /*
   Serial.print("distance: ");
   Serial.print(US.echoCatch());
   Serial.println("cm");
-  
+  */
   
   //モータの実行プログラム
   /*
   Motor M(MOT_FEEDBACKPULSE_PIN, MOT_ROTDIRECTION_PIN, MOT_INTOPULSE_PIN);
   if(y){
-  M.rotate(1,10,100);
-  y=false;
+    M.rotate(1,10,10);
+    y=false;
   }
+  */
   
   
     Serial.println(10);
@@ -73,14 +81,13 @@ void loop() {
   
  
   //PIRセンサの実行プログラム
-  
+  /*
   if(digitalRead(PIR_PIN) == HIGH)Serial.println("HIGH");
   else Serial.println("Low");
-  
+  */
 
   //温度センサの実行プログラム
   /*
-  Temperature T;
   Serial.print("Ambient = ");
   Serial.print(T.getAmbientTemperature()); 
   Serial.println("*C");
