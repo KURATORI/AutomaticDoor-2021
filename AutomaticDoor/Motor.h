@@ -5,6 +5,11 @@
   #include <Arduino.h>
   #endif
 
+  #ifndef INCLUDE_SENSORSTATUS
+  #define INCLUDE_SENSORSTATUS
+  #include "SensorStatus.h"
+  #endif
+
 class Motor{
   private:
     int feedbackpulse_pin;  //モーターから一定の回転によって送られてくるパルスのピン番号

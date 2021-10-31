@@ -1,5 +1,9 @@
 #include"Motor.h"
-  
+  #ifndef INCLUDE_SENSORSTATUS
+  #define INCLUDE_SENSORSTATUS
+  #include"SensorStatus.h"
+  #endif
+
 Motor::Motor(int pin1, int pin2, int pin3){
   feedbackpulse_pin = pin1;    
   rotdirection_pin = pin2; 
@@ -30,52 +34,22 @@ void Motor::rotate(bool rotdirection, float centimeter_per_sec, float movingdist
 
   float cmperstep = (float)8/3200; //(1周あたり)8cm:3200ステップ
   double delaytime = cmperstep/centimeter_per_sec/2*1000*1000;//[μs]
-  //double delaytime = (float)0.02/centimeter_per_sec*1000;
+  //double delaytime = (float)0.02/centimeter_per_sec*1000;//[ms]
   double steps = movingdistance/cmperstep; //必要ステップ数
 
-  long deltatime=0;
-
-  float check = (float)1/cmperstep;
+  float period = (float)1/cmperstep;
 
   for(long i=0;i<steps;i++){
-   
-   /*
-    Serial.println(steps); 
-    
-    Serial.print(" rotdirection: ");
-    Serial.println(this->rotdirection);
-
-    Serial.print(cmperstep);
-    Serial.print(" cmperstep: ");
-
-    Serial.print(" delaytime: ");
-    Serial.print(delaytime);
-    
-    Serial.print("Needstep: ");
-    Serial.println(steps);
-
-    Serial.print(" step: ");
-    Serial.println(i);
-    
-    Serial.print(" moved[cm]: ");
-    
-    Serial.print(i*cmperstep);
-
-    Serial.print(" deltatime: ");
-    deltatime+=delaytime*2;
-    Serial.println(deltatime);
-    */
     digitalWrite(intopulse_pin,HIGH);
     delayMicroseconds(delaytime);
-    //delay(delaytime);
     digitalWrite(intopulse_pin,LOW);
     delayMicroseconds(delaytime);
-    //delay(delaytime);
 
     //1cm進むごとにチェック
-    if(i%(int)check==0){
+    if(i%(int)period==0){
       Serial.println("check");
       Serial.println(i);
+      Serial.println(SensorStatus::sensor_isSafe);
     }
     
   }

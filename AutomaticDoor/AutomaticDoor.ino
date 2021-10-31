@@ -17,7 +17,6 @@
 
 Adafruit_MLX90614 mlx = Adafruit_MLX90614();
 
-//aaa
 void setup() {
   
   pinMode(PIR_PIN, INPUT);
@@ -59,24 +58,6 @@ void loop() {
     M.rotate(1,10,10);
     y=false;
   }
-  */
-  
-  
-    Serial.println(10);
-    digitalWrite(MOT_ROTDIRECTION_PIN,1);
-    for(int i=0;i<1000;i++){
-      digitalWrite(MOT_OUTPULSE_PIN,1);
-      delay(1);
-      digitalWrite(MOT_OUTPULSE_PIN,0);
-      delay(1);
-    }
-    digitalWrite(MOT_ROTDIRECTION_PIN,0);
-    for(int i=0;i<1000;i++){
-      digitalWrite(MOT_OUTPULSE_PIN,1);
-      delay(1);
-      digitalWrite(MOT_OUTPULSE_PIN,0);
-      delay(1);
-    }
   */
   
  
