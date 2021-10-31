@@ -2,6 +2,8 @@
 #include"Temperature.h"
 #include"Motor.h"
 #include"Usound.h"
+#include"SensorStatus.h"
+
 #define PIR_PIN 2
 #define MOT_FEEDBACKPULSE_PIN 3
 #define MOT_ROTDIRECTION_PIN 4
@@ -41,9 +43,12 @@ Usound PP1_US(PP1_ECHO_PIN, PP1_TRIG_PIN);
 Usound PP2_US(PP2_ECHO_PIN, PP2_TRIG_PIN);
 Motor M(MOT_FEEDBACKPULSE_PIN, MOT_ROTDIRECTION_PIN, MOT_INTOPULSE_PIN);
 Temperature T;
+
+byte b = SensorStatus::read_isSafe();
 //bool y=true;
+
 void loop() {
-  
+  Serial.print(b);
   //超音波センサ実行プログラム
   /*
   Serial.print("distance: ");

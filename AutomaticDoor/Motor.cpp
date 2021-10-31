@@ -49,9 +49,9 @@ void Motor::rotate(bool rotdirection, float centimeter_per_sec, float movingdist
     if(i%(int)period==0){
       Serial.println("check");
       Serial.println(i);
-      Serial.println(SensorStatus::sensor_isSafe);
     }
     
   }
   return;
 }
+
