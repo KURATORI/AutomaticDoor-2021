@@ -7,7 +7,7 @@
 
   #ifndef INCLUDE_SENSORSTATUS
   #define INCLUDE_SENSORSTATUS
-  #include "SensorStatus.h"
+  #include "Usound.h"
   #endif
 
 class Motor{
@@ -16,9 +16,12 @@ class Motor{
     int rotdirection_pin;   //回転方向制御のピン番号
     int intopulse_pin;      //パルスによってモーターの回転量を制御するピン番号
     
-    bool rotdirection;          //回転方向
+    bool rotdirection;          //回転方向 1で開く 0で閉まる
     float centimeter_per_sec;   //扉を移動させる速度[cm/s]
     float movingdistance;       //扉を移動させる距離[cm]
+
+    Usound PP1_US;   //(PP1_ECHO_PIN, PP1_TRIG_PIN)
+    Usound PP2_US;  //(PP2_ECHO_PIN, PP2_TRIG_PIN)
     
   public:
     Motor(int pin1, int pin2, int pin3);

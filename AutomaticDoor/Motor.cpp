@@ -1,10 +1,11 @@
 #include"Motor.h"
-  #ifndef INCLUDE_SENSORSTATUS
-  #define INCLUDE_SENSORSTATUS
-  #include"SensorStatus.h"
+  #ifndef INCLUDE_USOUND
+  #define INCLUDE_USOUND
+  #include"Usound.h"
   #endif
 
-Motor::Motor(int pin1, int pin2, int pin3){
+Motor::Motor(int pin1, int pin2, int pin3)
+: PP1_US(7,8),PP2_US(9,10){
   feedbackpulse_pin = pin1;    
   rotdirection_pin = pin2; 
   intopulse_pin = pin3;        
@@ -46,12 +47,15 @@ void Motor::rotate(bool rotdirection, float centimeter_per_sec, float movingdist
     delayMicroseconds(delaytime);
 
     //1cm進むごとにチェック
-    if(i%(int)period==0){
-      Serial.println("check");
-      Serial.println(i);
+    if(rotdirection == 0){
+       if(i%(int)period==0){
+          Serial.println("check");
+          Serial.println(i);
+          if(((int)PP1_US.echoCatch() < 70) || ((int)PP2_US.echoCatch() < 70)){
+          delay(5000);
+        }
+      }
     }
-    
   }
   return;
 }
-
