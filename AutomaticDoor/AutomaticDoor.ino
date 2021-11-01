@@ -1,4 +1,5 @@
 #include<Arduino.h>
+
 #include"Temperature.h"
 #include"Motor.h"
 #include"Usound.h"
@@ -17,8 +18,10 @@
 
 Adafruit_MLX90614 mlx = Adafruit_MLX90614();
 
+
 //aaa
 void setup() {
+  
   pinMode(PIR_PIN, INPUT);
   pinMode(MOT_FEEDBACKPULSE_PIN, INPUT);
   pinMode(MOT_ROTDIRECTION_PIN, OUTPUT);
@@ -31,18 +34,25 @@ void setup() {
   pinMode(PP2_TRIG_PIN, OUTPUT);
   pinMode(LED1_PIN, OUTPUT);
   pinMode(LED2_PIN, OUTPUT);
-    
   Serial.begin(9600);
   Serial.println("test");  
   mlx.begin();  //実行しないとデフォルト値が出続ける
 }
+
 Usound DIS_US(DIS_ECHO_PIN, DIS_TRIG_PIN);
 Usound PP1_US(PP1_ECHO_PIN, PP1_TRIG_PIN);
 Usound PP2_US(PP2_ECHO_PIN, PP2_TRIG_PIN);
+
+
 Motor M(MOT_FEEDBACKPULSE_PIN, MOT_ROTDIRECTION_PIN, MOT_INTOPULSE_PIN);
+
+/*
 Temperature T;
 //bool y=true;
+*/
+
 void loop() {
+  Serial.println("OK");
   
   //超音波センサ実行プログラム
   /*
