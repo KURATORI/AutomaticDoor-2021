@@ -34,6 +34,9 @@ void Motor::rotate(bool rotdirection, float centimeter_per_sec, float movingdist
   double steps = movingdistance/cmperstep; //必要ステップ数
 
   long deltatime=0;
+
+  float check = (float)1/cmperstep;
+
   for(long i=0;i<steps;i++){
    
    /*
@@ -68,6 +71,12 @@ void Motor::rotate(bool rotdirection, float centimeter_per_sec, float movingdist
     digitalWrite(intopulse_pin,LOW);
     delayMicroseconds(delaytime);
     //delay(delaytime);
+
+    //1cm進むごとにチェック
+    if(i%(int)check==0){
+      Serial.println("check");
+      Serial.println(i);
+    }
     
   }
   return;
