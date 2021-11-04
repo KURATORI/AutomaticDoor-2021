@@ -47,11 +47,11 @@ void Motor::rotate(bool rotdirection, float centimeter_per_sec, float movingdist
     delayMicroseconds(delaytime);
 
     //1cm進むごとにチェック
-    if(rotdirection == 0){
+    if(rotdirection == 1){
        if(i%(int)period==0){
           Serial.println("check");
           Serial.println(i);
-          if(((int)PP1_US.echoCatch() < 70) || ((int)PP2_US.echoCatch() < 70)){
+          if(((int)PP1_US.echoCatch() < 70)){
           delay(5000);
         }
       }

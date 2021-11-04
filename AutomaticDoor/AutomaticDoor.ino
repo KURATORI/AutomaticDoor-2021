@@ -1,8 +1,9 @@
 #include<Arduino.h>
-#include"Temperature.h"
+//#include"Temperature.h"
 #include"Motor.h"
 #include"Usound.h"
 //#include"SensorStatus.h"
+#include"src/libraries/Adafruit_MLX90614_Library/Adafruit_MLX90614.h"
 
 #define PIR_PIN 2
 #define MOT_FEEDBACKPULSE_PIN 2
@@ -43,21 +44,21 @@ void setup() {
 }
 Usound DIS_US(DIS_ECHO_PIN, DIS_TRIG_PIN);
 Motor M(MOT_FEEDBACKPULSE_PIN, MOT_ROTDIRECTION_PIN, MOT_INTOPULSE_PIN);
-Temperature T;
+//Temperature T;
 
 //byte b = SensorStatus::read_isSafe();
 //bool y=true;
 
 void loop() {
   Serial.print(DIS_US.echoCatch());
-  Serial.print(T.getObjectTemperature());
+  Serial.print(mlx.readObjectTempC());
   if(DIS_US.echoCatch() < 10){
     Serial.print("echo_OK");
-    if(T.getObjectTemperature() < 37.5){
+    if(mlx.readObjectTempC() < 37.5){
       Serial.print("tmp_OK");
-      M.rotate(1,10,50);
-      delay(5000);
-      M.rotate(0,10,50);
+      M.rotate(0,10,20);
+      delay(1000);
+      M.rotate(1,10,20);
     }
     else{
       Serial.print("tmp_NG");

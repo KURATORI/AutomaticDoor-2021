@@ -16,7 +16,7 @@ class Motor{
     int rotdirection_pin;   //回転方向制御のピン番号
     int intopulse_pin;      //パルスによってモーターの回転量を制御するピン番号
     
-    bool rotdirection;          //回転方向 1で開く 0で閉まる
+    bool rotdirection;          //回転方向 0で開く 1で閉まる
     float centimeter_per_sec;   //扉を移動させる速度[cm/s]
     float movingdistance;       //扉を移動させる距離[cm]
 
