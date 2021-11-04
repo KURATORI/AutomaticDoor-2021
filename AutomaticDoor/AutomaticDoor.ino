@@ -47,6 +47,7 @@ Motor M(MOT_FEEDBACKPULSE_PIN, MOT_ROTDIRECTION_PIN, MOT_INTOPULSE_PIN);
 //bool y=true;
 
 void loop() {
+  /*本番用
   Serial.print("人との距離:");
   Serial.print(DIS_US.echoCatch());
   Serial.print(" 温度:");
@@ -60,6 +61,7 @@ void loop() {
       M.rotate(0,10,20); //開く
       delay(5000);
       M.rotate(1,10,20);//閉まる
+      delay(1000);
     }
     else{
       Serial.print("tmp_NG");
@@ -69,8 +71,13 @@ void loop() {
     Serial.print("echo_NG");
     }
   Serial.println(" ");
-
-
+  */
+ 
+ //ドア往復するだけ
+  M.rotate(0,3,50,0); //開く
+  delay(5000);
+  M.rotate(1,3,50,0);//閉まる
+  delay(5000);
   
   //Serial.print(b);
   //超音波センサ実行プログラム
