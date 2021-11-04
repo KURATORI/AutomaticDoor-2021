@@ -42,7 +42,6 @@ void setup() {
 }
 Usound DIS_US(DIS_ECHO_PIN, DIS_TRIG_PIN);
 Motor M(MOT_FEEDBACKPULSE_PIN, MOT_ROTDIRECTION_PIN, MOT_INTOPULSE_PIN);
-
 //byte b = SensorStatus::read_isSafe();
 //bool y=true;
 
