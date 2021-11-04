@@ -1,8 +1,7 @@
 #include<Arduino.h>
-#include"Temperature.h"
 #include"Motor.h"
 #include"Usound.h"
-//#include"SensorStatus.h"
+#include"src/libraries/Adafruit_MLX90614_Library/Adafruit_MLX90614.h"
 
 #define PIR_PIN 2
 #define MOT_FEEDBACKPULSE_PIN 2
@@ -43,29 +42,33 @@ void setup() {
 }
 Usound DIS_US(DIS_ECHO_PIN, DIS_TRIG_PIN);
 Motor M(MOT_FEEDBACKPULSE_PIN, MOT_ROTDIRECTION_PIN, MOT_INTOPULSE_PIN);
-Temperature T;
 
 //byte b = SensorStatus::read_isSafe();
 //bool y=true;
 
 void loop() {
+  Serial.print("人との距離:");
   Serial.print(DIS_US.echoCatch());
-  Serial.print(T.getObjectTemperature());
+  Serial.print(" 温度:");
+  Serial.println(mlx.readObjectTempC());
   if(DIS_US.echoCatch() < 10){
-    Serial.print("echo_OK");
-    if(T.getObjectTemperature() < 37.5){
+    Serial.println("echo_OK");
+    Serial.print(" 温度が適正か:");
+    Serial.println(mlx.readObjectTempC());
+    if(30 < mlx.readObjectTempC() && mlx.readObjectTempC() < 37.5){
       Serial.print("tmp_OK");
-      M.rotate(1,10,50);
+      M.rotate(0,10,20); //開く
       delay(5000);
-      M.rotate(0,10,50);
+      M.rotate(1,10,20);//閉まる
     }
     else{
       Serial.print("tmp_NG");
     }
   }
   else{
-      Serial.print("echo_NG");
+    Serial.print("echo_NG");
     }
+  Serial.println(" ");
 
 
   
@@ -96,10 +99,10 @@ void loop() {
   //温度センサの実行プログラム
   /*
   Serial.print("Ambient = ");
-  Serial.print(T.getAmbientTemperature()); 
+  Serial.print(mlx.getAmbientTemperature()); 
   Serial.println("*C");
   Serial.print("Object = ");
-  Serial.print(T.getObjectTemperature());
+  Serial.print(mlx.getObjectTemperature());
   Serial.println("*C");
   Serial.println();
   delay(1000);
