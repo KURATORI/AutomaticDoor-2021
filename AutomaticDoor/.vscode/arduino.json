@@ -1,4 +1,5 @@
 {
     "board": "arduino:avr:uno",
-    "sketch": "AutomaticDoor.ino"
+    "sketch": "AutomaticDoor.ino",
+    "port": "COM3"
 }

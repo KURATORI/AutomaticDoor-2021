@@ -48,11 +48,14 @@ void Motor::rotate(bool rotdirection, float centimeter_per_sec, float movingdist
 
     //1cm進むごとにチェック
     if(rotdirection == 1){
-       if(i%(int)period==0){
-          Serial.println("check");
-          Serial.println(i);
-          if(((int)PP1_US.echoCatch() < 70)){
-          delay(5000);
+       if(i%(int)period == 0){
+          Serial.print("check:");
+          Serial.print(i);
+          Serial.print(" ");
+          Serial.println(PP1_US.echoCatch());
+          if((int)PP1_US.echoCatch() < 70/*||(int)PP2_US.echoCatch() < 70*/){
+            Serial.println("danger");
+            delay(5000);
         }
       }
     }
