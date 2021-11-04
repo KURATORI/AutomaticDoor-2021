@@ -1,36 +1,37 @@
 #include<Arduino.h>
-
-#include"Temperature.h"
 #include"Motor.h"
 #include"Usound.h"
+#include"src/libraries/Adafruit_MLX90614_Library/Adafruit_MLX90614.h"
+
 #define PIR_PIN 2
-#define MOT_FEEDBACKPULSE_PIN 3
-#define MOT_ROTDIRECTION_PIN 4
-#define MOT_INTOPULSE_PIN 5
-#define DIS_ECHO_PIN 6
-#define DIS_TRIG_PIN 7
-#define PP1_ECHO_PIN 8
-#define PP1_TRIG_PIN 9
-#define PP2_ECHO_PIN 10
-#define PP2_TRIG_PIN 11
-#define LED1_PIN 12
-#define LED2_PIN 13
+#define MOT_FEEDBACKPULSE_PIN 2
+#define MOT_ROTDIRECTION_PIN 3
+#define MOT_INTOPULSE_PIN 4
+#define DIS_ECHO_PIN 5
+#define DIS_TRIG_PIN 6
+#define PP1_ECHO_PIN 7
+#define PP1_TRIG_PIN 8
+#define PP2_ECHO_PIN 9
+#define PP2_TRIG_PIN 10
+#define EX_ECHO_PIN 11
+#define EX_TRIG_PIN 12
+#define LED1_PIN 13
+#define LED2_PIN 14
 
 Adafruit_MLX90614 mlx = Adafruit_MLX90614();
 
-
-//aaa
 void setup() {
   
-  pinMode(PIR_PIN, INPUT);
   pinMode(MOT_FEEDBACKPULSE_PIN, INPUT);
   pinMode(MOT_ROTDIRECTION_PIN, OUTPUT);
   pinMode(MOT_INTOPULSE_PIN, OUTPUT);
   pinMode(DIS_ECHO_PIN, INPUT);
   pinMode(DIS_TRIG_PIN, OUTPUT);
-  pinMode(PP1_ECHO_PIN, OUTPUT);
+  pinMode(PP1_ECHO_PIN, INPUT);
   pinMode(PP1_TRIG_PIN, OUTPUT);
-  pinMode(PP2_ECHO_PIN, OUTPUT);
+  pinMode(PP2_ECHO_PIN, INPUT);
+  pinMode(PP2_TRIG_PIN, OUTPUT);
+  pinMode(PP2_ECHO_PIN, INPUT);
   pinMode(PP2_TRIG_PIN, OUTPUT);
   pinMode(LED1_PIN, OUTPUT);
   pinMode(LED2_PIN, OUTPUT);
@@ -40,20 +41,45 @@ void setup() {
 }
 
 Usound DIS_US(DIS_ECHO_PIN, DIS_TRIG_PIN);
-Usound PP1_US(PP1_ECHO_PIN, PP1_TRIG_PIN);
-Usound PP2_US(PP2_ECHO_PIN, PP2_TRIG_PIN);
-
-
 Motor M(MOT_FEEDBACKPULSE_PIN, MOT_ROTDIRECTION_PIN, MOT_INTOPULSE_PIN);
-
-/*
-Temperature T;
+//byte b = SensorStatus::read_isSafe();
 //bool y=true;
-*/
 
 void loop() {
-  Serial.println("OK");
+  /*本番用
+  Serial.print("人との距離:");
+  Serial.print(DIS_US.echoCatch());
+  Serial.print(" 温度:");
+  Serial.println(mlx.readObjectTempC());
+  if(DIS_US.echoCatch() < 10){
+    Serial.println("echo_OK");
+    Serial.print(" 温度が適正か:");
+    Serial.println(mlx.readObjectTempC());
+    if(30 < mlx.readObjectTempC() && mlx.readObjectTempC() < 37.5){
+      Serial.print("tmp_OK");
+      M.rotate(0,10,20); //開く
+      delay(5000);
+      M.rotate(1,10,20);//閉まる
+      delay(1000);
+    }
+    else{
+      Serial.print("tmp_NG");
+    }
+  }
+  else{
+    Serial.print("echo_NG");
+    }
+  Serial.println(" ");
+  */
+ 
+ //ドア往復するだけ
+  M.rotate(0,3,50,0); //開く
+  delay(5000);
+  M.rotate(1,3,50,0);//閉まる
+  delay(5000);
+
   
+  //Serial.print(b);
   //超音波センサ実行プログラム
   /*
   Serial.print("distance: ");
@@ -70,24 +96,6 @@ void loop() {
   }
   */
   
-  
-    Serial.println(10);
-    digitalWrite(MOT_ROTDIRECTION_PIN,1);
-    for(int i=0;i<1000;i++){
-      digitalWrite(MOT_OUTPULSE_PIN,1);
-      delay(1);
-      digitalWrite(MOT_OUTPULSE_PIN,0);
-      delay(1);
-    }
-    digitalWrite(MOT_ROTDIRECTION_PIN,0);
-    for(int i=0;i<1000;i++){
-      digitalWrite(MOT_OUTPULSE_PIN,1);
-      delay(1);
-      digitalWrite(MOT_OUTPULSE_PIN,0);
-      delay(1);
-    }
-  */
-  
  
   //PIRセンサの実行プログラム
   /*
@@ -98,10 +106,10 @@ void loop() {
   //温度センサの実行プログラム
   /*
   Serial.print("Ambient = ");
-  Serial.print(T.getAmbientTemperature()); 
+  Serial.print(mlx.getAmbientTemperature()); 
   Serial.println("*C");
   Serial.print("Object = ");
-  Serial.print(T.getObjectTemperature());
+  Serial.print(mlx.getObjectTemperature());
   Serial.println("*C");
   Serial.println();
   delay(1000);

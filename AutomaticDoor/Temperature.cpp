@@ -1,7 +1,8 @@
 #include"Temperature.h"
 
-Temperature::Temperature(){
-  mlx = Adafruit_MLX90614();
+Temperature::Temperature()
+: mlx()
+{
   temperature_object = mlx.readObjectTempC();
   temperature_ambient = mlx.readAmbientTempC();
 }
