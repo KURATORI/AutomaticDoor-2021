@@ -35,11 +35,11 @@ void setup() {
   pinMode(PP2_TRIG_PIN, OUTPUT);
   pinMode(LED1_PIN, OUTPUT);
   pinMode(LED2_PIN, OUTPUT);
-    
   Serial.begin(9600);
   Serial.println("test");  
   mlx.begin();  //実行しないとデフォルト値が出続ける
 }
+
 Usound DIS_US(DIS_ECHO_PIN, DIS_TRIG_PIN);
 Motor M(MOT_FEEDBACKPULSE_PIN, MOT_ROTDIRECTION_PIN, MOT_INTOPULSE_PIN);
 //byte b = SensorStatus::read_isSafe();
@@ -77,6 +77,7 @@ void loop() {
   delay(5000);
   M.rotate(1,3,50,0);//閉まる
   delay(5000);
+
   
   //Serial.print(b);
   //超音波センサ実行プログラム
