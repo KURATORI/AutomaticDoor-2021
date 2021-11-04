@@ -53,7 +53,7 @@ void Motor::rotate(bool rotdirection, float centimeter_per_sec, float movingdist
           Serial.print(i);
           Serial.print(" ");
           Serial.println(PP1_US.echoCatch());
-          if((int)PP1_US.echoCatch() < 70){
+          if((int)PP1_US.echoCatch() < 70/*||(int)PP2_US.echoCatch() < 70*/){
             Serial.println("danger");
             delay(5000);
         }
