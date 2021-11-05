@@ -42,24 +42,23 @@ void setup() {
 }
 Usound DIS_US(DIS_ECHO_PIN, DIS_TRIG_PIN);
 Motor M(MOT_FEEDBACKPULSE_PIN, MOT_ROTDIRECTION_PIN, MOT_INTOPULSE_PIN);
-//byte b = SensorStatus::read_isSafe();
-//bool y=true;
-
+float tempC = 0;
 void loop() {
-  /*本番用
+  //本番用
   Serial.print("人との距離:");
   Serial.print(DIS_US.echoCatch());
   Serial.print(" 温度:");
-  Serial.println(mlx.readObjectTempC());
+  tempC = mlx.readObjectTempC() - ((3.3-3.0)*0.6) + 2.7;
+  Serial.println(tempC);
   if(DIS_US.echoCatch() < 10){
     Serial.println("echo_OK");
     Serial.print(" 温度が適正か:");
-    Serial.println(mlx.readObjectTempC());
-    if(30 < mlx.readObjectTempC() && mlx.readObjectTempC() < 37.5){
-      Serial.print("tmp_OK");
-      M.rotate(0,10,20); //開く
-      delay(5000);
-      M.rotate(1,10,20);//閉まる
+    Serial.println(tempC);
+    if(35.5 < tempC && tempC < 37.5){
+      Serial.println("tmpC_OK");
+      M.rotate(0,10,50,1); //開く
+      delay(1000);
+      M.rotate(1,10,50,1);//閉まる
       delay(1000);
     }
     else{
@@ -70,14 +69,16 @@ void loop() {
     Serial.print("echo_NG");
     }
   Serial.println(" ");
-  */
+  
  
  //ドア往復するだけ
+ /*
   M.rotate(0,3,50,0); //開く
   delay(5000);
   M.rotate(1,3,50,0);//閉まる
   delay(5000);
-  
+ */
+
   //Serial.print(b);
   //超音波センサ実行プログラム
   /*
