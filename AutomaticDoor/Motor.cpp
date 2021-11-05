@@ -1,8 +1,4 @@
 #include"Motor.h"
-  #ifndef INCLUDE_USOUND
-  #define INCLUDE_USOUND
-  #include"Usound.h"
-  #endif
 
 Motor::Motor(int pin1, int pin2, int pin3)
 : PP1_US(7,8),PP2_US(9,10){
@@ -59,11 +55,11 @@ void Motor::rotate(bool rotdirection, float centimeter_per_sec, float movingdist
           while((int)PP1_US.echoCatch() < 70 /*||(int)PP2_US.echoCatch() < 70*/){
             Serial.println("danger");
             delay(2000);
-          }
-
+          } 
         }
       }
     }
+    
   }
   return;
 }
@@ -107,7 +103,7 @@ void Motor::rotate_easing(bool rotdirection, float centimeter_per_sec, float mov
         Serial.print(i);
         Serial.print(" ");
         Serial.println(PP1_US.echoCatch());
-
+        
         while((int)PP1_US.echoCatch() < 70 /*||(int)PP2_US.echoCatch() < 70*/){
           Serial.println("danger");
           delay(2000);

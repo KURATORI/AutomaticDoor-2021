@@ -4,10 +4,10 @@
   #define INCLUDE_ARDUINO
   #include <Arduino.h>
   #endif
-
-  #ifndef INCLUDE_SENSORSTATUS
-  #define INCLUDE_SENSORSTATUS
-  #include "Usound.h"
+  
+  #ifndef INCLUDE_US
+  #define INCLUDE_US
+  #include"Usound.h"
   #endif
 
 class Motor{
