@@ -3,7 +3,6 @@
 #include"Usound.h"
 #include"src/libraries/Adafruit_MLX90614_Library/Adafruit_MLX90614.h"
 
-#define PIR_PIN 2
 #define MOT_FEEDBACKPULSE_PIN 2
 #define MOT_ROTDIRECTION_PIN 3
 #define MOT_INTOPULSE_PIN 4
@@ -45,6 +44,16 @@ Motor M(MOT_FEEDBACKPULSE_PIN, MOT_ROTDIRECTION_PIN, MOT_INTOPULSE_PIN);
 float tempC = 0;
 void loop() {
   //本番用
+  /*
+  //手動で内側から開閉する
+  if(EX_US.echoCatch() < 3.0){/
+      M.rotate(0,20,60,1); //開く
+      delay(1000);
+      M.rotate(1,10,60,1);//閉まる
+      delay(1000);
+  }
+  
+  //温度を測定して開閉する
   Serial.print("人との距離:");
   Serial.print(DIS_US.echoCatch());
   Serial.print(" 温度:");
@@ -56,9 +65,9 @@ void loop() {
     Serial.println(tempC);
     if(35.5 < tempC && tempC < 37.5){
       Serial.println("tmpC_OK");
-      M.rotate(0,10,50,1); //開く
+      M.rotate(0,20,60,1); //開く
       delay(1000);
-      M.rotate(1,10,50,1);//閉まる
+      M.rotate(1,10,60,1);//閉まる
       delay(1000);
     }
     else{
@@ -69,17 +78,16 @@ void loop() {
     Serial.print("echo_NG");
     }
   Serial.println(" ");
-  
+  */
  
- //ドア往復するだけ
- /*
-  M.rotate(0,3,50,0); //開く
-  delay(5000);
-  M.rotate(1,3,50,0);//閉まる
-  delay(5000);
- */
-
-
+  //ドア往復するだけ
+  /*
+  M.rotate(0,20,60,0); //開く
+  delay(1000);
+  M.rotate(1,10,60,0);//閉まる
+  delay(1000);
+  */
+  
   //Serial.print(b);
   //超音波センサ実行プログラム
   /*
