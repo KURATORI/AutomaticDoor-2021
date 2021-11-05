@@ -41,43 +41,64 @@ void setup() {
 }
 
 Usound DIS_US(DIS_ECHO_PIN, DIS_TRIG_PIN);
+Usound EX_US(EX_ECHO_PIN, EX_TRIG_PIN);
 Motor M(MOT_FEEDBACKPULSE_PIN, MOT_ROTDIRECTION_PIN, MOT_INTOPULSE_PIN);
+float dis;    //温度を測るときの距離
+float temp[4] = {0, 0, 0, 0};  //測定した温度
+int tempnum = 0;  //tempの添え字
+float tempave;  //温度の平均
+
 //byte b = SensorStatus::read_isSafe();
 //bool y=true;
 
 void loop() {
-  /*本番用
+  //本番用
+  dis = DIS_US.echoCatch();
   Serial.print("人との距離:");
   Serial.print(DIS_US.echoCatch());
   Serial.print(" 温度:");
   Serial.println(mlx.readObjectTempC());
-  if(DIS_US.echoCatch() < 10){
+  if(dis > 10 && dis < 15){
     Serial.println("echo_OK");
-    Serial.print(" 温度が適正か:");
-    Serial.println(mlx.readObjectTempC());
-    if(30 < mlx.readObjectTempC() && mlx.readObjectTempC() < 37.5){
-      Serial.print("tmp_OK");
-      M.rotate(0,10,20); //開く
-      delay(5000);
-      M.rotate(1,10,20);//閉まる
-      delay(1000);
+    if(tempnum < 4){
+      temp[tempnum] = (mlx.readObjectTempC() - (((3.3-3.0)*0.6)) + 2.5);
+      Serial.print(tempnum);
+      Serial.print(" 測定温度:");
+      Serial.println(temp[tempnum]);
+      tempnum++;
+      delay(100);
     }
-    else{
-      Serial.print("tmp_NG");
+    else {
+      tempave = (temp[1] + temp[2] + temp[3]) / 3;
+      Serial.print("平均温度");
+      Serial.println(tempave);
+      if(30 < tempave && tempave < 37.5){
+        Serial.print("tmp_OK");
+        M.rotate(0,15,60,1); //開く
+        delay(5000);
+        M.rotate(1,10,60,1);  //閉まる
+        delay(1000);
+      }
+      else{
+        Serial.print("tmp_NG");
+      }
+      for(int i=0;i<3;i++)temp[i]=0;
+      tempnum = 0;
     }
   }
   else{
     Serial.print("echo_NG");
     }
   Serial.println(" ");
-  */
+  
  
  //ドア往復するだけ
+ /*
   M.rotate(0,3,50,0); //開く
   delay(5000);
   M.rotate(1,3,50,0);//閉まる
   delay(5000);
-
+*/
   
   //Serial.print(b);
   //超音波センサ実行プログラム
