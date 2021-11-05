@@ -4,11 +4,12 @@
   #define INCLUDE_ARDUINO
   #include <Arduino.h>
   #endif
-  
+
   #ifndef INCLUDE_US
   #define INCLUDE_US
-  #include"Usound.h"
+  #include "Usound.h"
   #endif
+
 
 class Motor{
   private:
@@ -31,7 +32,7 @@ class Motor{
     
     // モーターの回転速度と方向を指定し、回す
     void rotate(bool rotdirection, float centimeter_per_sec, float movingdistance, bool sensorcheck);
-    void rotate_easing(bool rotdirection, float centimeter_per_sec, float movingdistance, bool sensorcheck);
+    void rotate_easing(bool rotdirection, float centimeter_per_sec, float movingdistance, bool sensorcheck, float easein, float easeout);
     void rotate();
     
 };

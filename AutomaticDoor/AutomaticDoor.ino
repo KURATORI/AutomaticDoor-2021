@@ -3,7 +3,6 @@
 #include"Usound.h"
 #include"src/libraries/Adafruit_MLX90614_Library/Adafruit_MLX90614.h"
 
-#define PIR_PIN 2
 #define MOT_FEEDBACKPULSE_PIN 2
 #define MOT_ROTDIRECTION_PIN 3
 #define MOT_INTOPULSE_PIN 4
@@ -43,13 +42,11 @@ void setup() {
 Usound DIS_US(DIS_ECHO_PIN, DIS_TRIG_PIN);
 Usound EX_US(EX_ECHO_PIN, EX_TRIG_PIN);
 Motor M(MOT_FEEDBACKPULSE_PIN, MOT_ROTDIRECTION_PIN, MOT_INTOPULSE_PIN);
+
 float dis;    //温度を測るときの距離
 float temp[4] = {0, 0, 0, 0};  //測定した温度
 int tempnum = 0;  //tempの添え字
 float tempave;  //温度の平均
-
-//byte b = SensorStatus::read_isSafe();
-//bool y=true;
 
 void loop() {
   //本番用
@@ -92,13 +89,13 @@ void loop() {
   Serial.println(" ");
   
  
- //ドア往復するだけ
- /*
-  M.rotate(0,3,50,0); //開く
-  delay(5000);
-  M.rotate(1,3,50,0);//閉まる
-  delay(5000);
-*/
+  //ドア往復するだけ
+  /*
+  M.rotate(0,20,60,0); //開く
+  delay(1000);
+  M.rotate(1,10,60,0);//閉まる
+  delay(1000);
+  */
   
   //Serial.print(b);
   //超音波センサ実行プログラム
