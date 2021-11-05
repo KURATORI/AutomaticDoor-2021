@@ -14,8 +14,8 @@
 #define PP2_TRIG_PIN 10
 #define EX_ECHO_PIN 11
 #define EX_TRIG_PIN 12
-#define LED1_PIN 13
-#define LED2_PIN 14
+#define LED1_PIN 13 //緑色LED
+#define LED2_PIN 14 //赤色LED
 
 Adafruit_MLX90614 mlx = Adafruit_MLX90614();
 
@@ -32,6 +32,8 @@ void setup() {
   pinMode(PP2_TRIG_PIN, OUTPUT);
   pinMode(PP2_ECHO_PIN, INPUT);
   pinMode(PP2_TRIG_PIN, OUTPUT);
+  pinMode(EX_ECHO_PIN, INPUT);
+  pinMode(EX_TRIG_PIN, OUTPUT);
   pinMode(LED1_PIN, OUTPUT);
   pinMode(LED2_PIN, OUTPUT);
   Serial.begin(9600);
@@ -47,23 +49,34 @@ float dis;    //温度を測るときの距離
 float temp[4] = {0, 0, 0, 0};  //測定した温度
 int tempnum = 0;  //tempの添え字
 float tempave;  //温度の平均
+float ex_dis = 10.0; //手動開閉のときの距離
 
 void loop() {
   //本番用
+
+  //手動で内側から開閉する
+  ex_dis = EX_US.echoCatch();
+  Serial.print(ex_dis);
+  if(0.1 < ex_dis && ex_dis < 3.0){
+      M.rotate(0,20,60,1); //開く
+      delay(1000);
+      M.rotate(1,10,60,1);//閉まる
+      delay(1000);
+  }
   dis = DIS_US.echoCatch();
   Serial.print("人との距離:");
   Serial.print(DIS_US.echoCatch());
-  Serial.print(" 温度:");
-  Serial.println(mlx.readObjectTempC());
+  //Serial.print(" 温度:");
+  //Serial.println(mlx.readObjectTempC());
   if(dis > 10 && dis < 15){
     Serial.println("echo_OK");
     if(tempnum < 4){
       temp[tempnum] = (mlx.readObjectTempC() - (((3.3-3.0)*0.6)) + 2.5);
-      Serial.print(tempnum);
-      Serial.print(" 測定温度:");
-      Serial.println(temp[tempnum]);
+      //Serial.print(tempnum);
+      //Serial.print(" 測定温度:");
+      //Serial.println(temp[tempnum]);
       tempnum++;
-      delay(100);
+      //delay(100);
     }
     else {
       tempave = (temp[1] + temp[2] + temp[3]) / 3;
@@ -71,9 +84,9 @@ void loop() {
       Serial.println(tempave);
       if(30 < tempave && tempave < 37.5){
         Serial.print("tmp_OK");
-        M.rotate(0,15,60,1); //開く
+        M.rotate(0,25,60,1); //開く
         delay(5000);
-        M.rotate(1,10,60,1);  //閉まる
+        M.rotate(1,15,60,1);  //閉まる
         delay(1000);
       }
       else{
@@ -85,7 +98,7 @@ void loop() {
   }
   else{
     Serial.print("echo_NG");
-    }
+  }
   Serial.println(" ");
   
  
