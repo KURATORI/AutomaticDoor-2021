@@ -62,7 +62,7 @@ void Motor::rotate(bool rotdirection, float centimeter_per_sec, float movingdist
   this->centimeter_per_sec = centimeter_per_sec;
   this->sensorcheck = sensorcheck;
 
-  digitalWrite(rotdirection_pin,this->rotdirection);
+  //digitalWrite(rotdirection_pin,this->rotdirection);
 
   float cmperstep = (float)8/3200; //(1周あたり)8cm:3200ステップ[cm/step]
   float steppercm = (float)1/cmperstep;  //1cm毎ステップ  [step/cm]
@@ -78,12 +78,22 @@ void Motor::rotate(bool rotdirection, float centimeter_per_sec, float movingdist
 
   //0除算を避ける
   for(long i=1;i<steps+1;i++){
+    
     //パルスを送ってモータを回す
-    digitalWrite(intopulse_pin,HIGH);
-    delayMicroseconds(delaytime);
-    digitalWrite(intopulse_pin,LOW);
-    delayMicroseconds(delaytime);
+    if(rotdirection == 0){
+      digitalWrite(rotdirection_pin,HIGH);
+      delayMicroseconds(delaytime);
+      digitalWrite(rotdirection_pin,LOW);
+      delayMicroseconds(delaytime);
+    }
 
+    if(rotdirection == 1){
+      digitalWrite(intopulse_pin,HIGH);
+      delayMicroseconds(delaytime);
+      digitalWrite(intopulse_pin,LOW);
+      delayMicroseconds(delaytime);
+    }
+    
     //フィードバックパルスを受け取る
     if(digitalRead(feedbackpulse_pin) == LOW){  //パルスはLOW
       //一定周期で来るはずのパルスが来なければ
