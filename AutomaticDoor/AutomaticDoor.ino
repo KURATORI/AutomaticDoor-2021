@@ -1,4 +1,5 @@
 #include<Arduino.h>
+#include<LiquidCrystal_I2C.h>
 #include"Motor.h"
 #include"Usound.h"
 #include"src/libraries/Adafruit_MLX90614_Library/Adafruit_MLX90614.h"
@@ -18,6 +19,7 @@
 #define LED2_PIN 14 //赤色LED
 
 Adafruit_MLX90614 mlx = Adafruit_MLX90614();
+LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 void setup() {
   
@@ -36,6 +38,8 @@ void setup() {
   pinMode(EX_TRIG_PIN, OUTPUT);
   pinMode(LED1_PIN, OUTPUT);
   pinMode(LED2_PIN, OUTPUT);
+  lcd.init();                      
+  lcd.backlight();
   Serial.begin(9600);
   Serial.println("test");  
   mlx.begin();  //実行しないとデフォルト値が出続ける
@@ -53,13 +57,28 @@ float ex_dis = 10.0; //手動開閉のときの距離
 
 void loop() {
   //本番用
-
+  //LED
+  digitalWrite(LED1_PIN,LOW);
+  digitalWrite(LED2_PIN,HIGH);
+  
+  
   //手動で内側から開閉する
   ex_dis = EX_US.echoCatch();
   Serial.print(ex_dis);
   if(0.1 < ex_dis && ex_dis < 3.0){
+      //LCD OPEN
+      lcd.clear();
+      lcd.setCursor(0, 1);
+      lcd.print("OPEN");
+      
       M.rotate(0,20,60,1); //開く
       delay(1000);
+
+      //LCD CLOSE
+      lcd.clear();
+      lcd.setCursor(0, 1);
+      lcd.print("CLOSE");
+      
       M.rotate(1,10,60,1);//閉まる
       delay(1000);
   }
@@ -83,9 +102,39 @@ void loop() {
       Serial.print("平均温度");
       Serial.println(tempave);
       if(30 < tempave && tempave < 37.5){
+        //LCD OPEN
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("\xc0\xb2\xb5\xdd");
+        lcd.print(tempave);
+        lcd.print("\xDF");
+        lcd.print("C");
+        lcd.setCursor(0, 1);
+        lcd.print("OPEN");
         Serial.print("tmp_OK");
+        //LED
+        digitalWrite(LED1_PIN,HIGH);
+        digitalWrite(LED2_PIN,LOW);
+        
         M.rotate(0,25,60,1); //開く
+
+        //LCD CLOSE
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("\xc0\xb2\xb5\xdd");
+        lcd.print(tempave);
+        lcd.print("\xDF");
+        lcd.print("C");
+        lcd.setCursor(0, 1);
+        lcd.print("CLOSE");
+        //LED
+        digitalWrite(LED1_PIN,LOW);
+        digitalWrite(LED2_PIN,HIGH);
         delay(5000);
+        //LED
+        digitalWrite(LED1_PIN,HIGH);
+        digitalWrite(LED2_PIN,LOW);
+        
         M.rotate(1,15,60,1);  //閉まる
         delay(1000);
       }
@@ -96,8 +145,17 @@ void loop() {
       tempnum = 0;
     }
   }
-  else{
-    Serial.print("echo_NG");
+  //後ろ
+  else if(dis <= 10){
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("\xb3\xbc\xdb\xc6\xd3\xc4\xde\xda");
+  }
+  //前
+  else if(dis >= 15){
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("\xcf\xb4\xcd\xbd\xbd\xd2");
   }
   Serial.println(" ");
   
