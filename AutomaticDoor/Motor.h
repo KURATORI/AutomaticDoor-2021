@@ -14,8 +14,8 @@
 class Motor{
   private:
     int feedbackpulse_pin;  //モーターから一定の回転によって送られてくるパルスのピン番号
-    int rotdirection_pin;   //回転方向制御のピン番号
-    int intopulse_pin;      //パルスによってモーターの回転量を制御するピン番号
+    int rotdirection_pin;   //開く
+    int intopulse_pin;      //閉まる
     
     bool rotdirection;          //回転方向 0で開く 1で閉まる
     float centimeter_per_sec;   //扉を移動させる速度[cm/s]
