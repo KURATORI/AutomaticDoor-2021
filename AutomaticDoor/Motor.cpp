@@ -100,6 +100,7 @@ void Motor::rotate(bool rotdirection, float centimeter_per_sec, float movingdist
       if(i%long(rounddown*steppercm)!=0){
         Serial.print("Door bubmped into something!  step:");
         Serial.println(i);
+        delay(100);
         softwareReset::simple();//プログラム再起動
       }
       //Serial.print("feedback incoming, step is :");
@@ -112,10 +113,10 @@ void Motor::rotate(bool rotdirection, float centimeter_per_sec, float movingdist
       //1cm進むごとにチェック
       if(this->rotdirection == 1){//ドアが閉じる場合にのみ挟まり検知
         if(i%(int)steppercm == 0){
-          Serial.print("check: ");
-          Serial.print(i);
-          Serial.print(" ");
-          Serial.println(PP1_US.echoCatch());
+          //Serial.print("check: ");
+          //Serial.print(i);
+          //Serial.print(" ");
+          //Serial.println(PP1_US.echoCatch());
           while((int)PP1_US.echoCatch() < 70 ||(int)PP2_US.echoCatch() < 70){
             Serial.println("Someone is between the door");
             delay(3000);
