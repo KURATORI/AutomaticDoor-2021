@@ -79,7 +79,7 @@ void loop() {
       lcd.setCursor(0, 1);
       lcd.print("CLOSE");
       
-      M.rotate(1,25,72,1);//閉まる
+      M.rotate(1,25,73,1);//閉まる
       delay(1000);
   }
   dis = DIS_US.echoCatch();
@@ -87,7 +87,7 @@ void loop() {
   Serial.print(DIS_US.echoCatch());
   //Serial.print(" 温度:");
   //Serial.println(dis);
-  if(dis > 10 && dis < 15){
+  if(dis >= 5 && dis <= 15){
     Serial.println("echo_OK");
     if(tempnum < 4){
       temp[tempnum] = (mlx.readObjectTempC() - (((3.3-3.0)*0.6)) + 2.5);
@@ -137,30 +137,41 @@ void loop() {
         digitalWrite(LED1_PIN,HIGH);
         digitalWrite(LED2_PIN,LOW);
         
-        M.rotate(1,25,72,1);  //閉まる
+        M.rotate(1,25,73,1);  //閉まる
         delay(1000);
       }
       else{
-        //Serial.print("tmp_NG");
-        lcd.clear();
-        lcd.setCursor(0, 0);
-        lcd.print(tempave);
-        lcd.setCursor(0, 1);
-        lcd.print("\xc0\xb2\xb5\xdd\x20\xc0\xb6\xb2\xd6");
-        delay(5000);
+        if(tempave < 30){
+          lcd.clear();
+          lcd.setCursor(0, 0);
+          lcd.print(tempave);
+          lcd.setCursor(0, 1);
+          
+          lcd.print("\xca\xb6\xd8\xc5\xb5\xbc\xc3");
+          delay(1000);
+        }
+        else{
+          //Serial.print("tmp_NG");
+          lcd.clear();
+          lcd.setCursor(0, 0);
+          lcd.print(tempave);
+          lcd.setCursor(0, 1);
+          lcd.print("\xc0\xb2\xb5\xdd\x20\xc0\xb6\xb2\xdc");
+          delay(1000);
+        }
       }
       for(int i=0;i<3;i++)temp[i]=0;
       tempnum = 0;
     }
   }
   //後ろ
-  else if(dis <= 10){
+  else if(dis < 5){
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print("\xb3\xbc\xdb\xc6\xd3\xc4\xde\xda");
   }
   //前
-  else if(dis >= 15){
+  else if(dis > 15){
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print("\xcf\xb4\xcd\xbd\xbd\xd2");
