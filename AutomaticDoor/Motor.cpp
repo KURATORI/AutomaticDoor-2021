@@ -1,3 +1,4 @@
+
 #include"Motor.h"
   #ifndef INCLUDE_SOFTWARERESET
   #define INCLUDE_SOFTWARERESET
@@ -29,13 +30,33 @@ void Motor::rotate(bool rotdirection, float centimeter_per_sec, float movingdist
 
   float rounddown = 8*(7.2/360);//movingdistanceを、この値の倍数に近いほうで丸める
   //ex. rounddown = 0.16, movingdistance = 0.31のとき、rounddownの倍数に達していないため0.32に丸める
-  //近いほうにまとめる処理
+  
+  float gap = float((100*(int)movingdistance) % (100*(int)rounddown));//丸め誤差の大きさ
+  Serial.print("gap:");
+  Serial.print(gap);
+  if(gap == 0){
+    //丸め誤差がなければ移動距離に修正を加えない
+    this->movingdistance = movingdistance;
+    Serial.println("movingdistance doesn't change");
+  }
+  else{
+    if(gap < rounddown/2.0){
+      this->movingdistance = movingdistance - gap/100;
+      Serial.println("movingdistance decreased");
+    }
+    else{
+      this->movingdistance = movingdistance + (rounddown - gap/100);
+      Serial.println("movingdistance increased");
+    }
+  }
+  Serial.println(this->movingdistance);
+  /*
   if(float((100*(int)movingdistance) % (100*(int)rounddown))/100.0 < rounddown/2.0){
     this->movingdistance = movingdistance - float((100*(int)movingdistance) % (100*(int)rounddown))/100.0;
   }
   else{
     this->movingdistance = movingdistance + (rounddown - (float((100*(int)movingdistance) % (100*(int)rounddown))/100.0));
-  }
+  }*/
   
   this->rotdirection = rotdirection;
   this->centimeter_per_sec = centimeter_per_sec;
@@ -80,7 +101,7 @@ void Motor::rotate(bool rotdirection, float centimeter_per_sec, float movingdist
         Serial.print("Door bubmped into something!  step:");
         Serial.println(i);
         delay(100);
-        softwareReset::simple();//モータ停止
+        softwareReset::simple();//プログラム再起動
       }
       //Serial.print("feedback incoming, step is :");
       //Serial.println(i);
