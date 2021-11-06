@@ -71,7 +71,7 @@ void loop() {
       lcd.setCursor(0, 1);
       lcd.print("OPEN");
       
-      M.rotate(0,20,60,1); //開く
+      M.rotate(0,25,72,1); //開く
       delay(1000);
 
       //LCD CLOSE
@@ -79,27 +79,29 @@ void loop() {
       lcd.setCursor(0, 1);
       lcd.print("CLOSE");
       
-      M.rotate(1,10,60,1);//閉まる
+      M.rotate(1,25,72,1);//閉まる
       delay(1000);
   }
   dis = DIS_US.echoCatch();
   Serial.print("人との距離:");
   Serial.print(DIS_US.echoCatch());
   //Serial.print(" 温度:");
-  //Serial.println(mlx.readObjectTempC());
+  //Serial.println(dis);
   if(dis > 10 && dis < 15){
     Serial.println("echo_OK");
     if(tempnum < 4){
       temp[tempnum] = (mlx.readObjectTempC() - (((3.3-3.0)*0.6)) + 2.5);
-      //Serial.print(tempnum);
-      //Serial.print(" 測定温度:");
-      //Serial.println(temp[tempnum]);
+      Serial.print(tempnum);
+      Serial.print(" 測定温度:");
+      Serial.println(temp[tempnum]);
       tempnum++;
       //delay(100);
     }
     else {
       tempave = (temp[1] + temp[2] + temp[3]) / 3;
+      delay(100);
       Serial.print("平均温度");
+      delay(100);
       Serial.println(tempave);
       if(30 < tempave && tempave < 37.5){
         //LCD OPEN
@@ -116,7 +118,7 @@ void loop() {
         digitalWrite(LED1_PIN,HIGH);
         digitalWrite(LED2_PIN,LOW);
         
-        M.rotate(0,25,60,1); //開く
+        M.rotate(0,25,72,1); //開く
 
         //LCD CLOSE
         lcd.clear();
@@ -135,11 +137,17 @@ void loop() {
         digitalWrite(LED1_PIN,HIGH);
         digitalWrite(LED2_PIN,LOW);
         
-        M.rotate(1,15,60,1);  //閉まる
+        M.rotate(1,25,72,1);  //閉まる
         delay(1000);
       }
       else{
-        Serial.print("tmp_NG");
+        //Serial.print("tmp_NG");
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print(tempave);
+        lcd.setCursor(0, 1);
+        lcd.print("\xc0\xb2\xb5\xdd\x20\xc0\xb6\xb2\xd6");
+        delay(5000);
       }
       for(int i=0;i<3;i++)temp[i]=0;
       tempnum = 0;
