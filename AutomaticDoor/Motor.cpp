@@ -8,8 +8,8 @@
 Motor::Motor(int pin1, int pin2, int pin3)
 : PP1_US(7,8),PP2_US(9,10){
   feedbackpulse_pin = pin1;    
-  rotdirection_pin = pin2; 
-  intopulse_pin = pin3; 
+  intopulse_pin_open = pin2; 
+  intopulse_pin_close = pin3; 
 }
 
 void Motor::setRotateDirection(bool rotdirection){
@@ -81,20 +81,20 @@ void Motor::rotate(bool rotdirection, float centimeter_per_sec, float movingdist
     
     //パルスを送ってモータを回す
     if(rotdirection == 0){
-      digitalWrite(rotdirection_pin,HIGH);
+      digitalWrite(intopulse_pin_open,HIGH);
       delayMicroseconds(delaytime);
-      digitalWrite(rotdirection_pin,LOW);
+      digitalWrite(intopulse_pin_open,LOW);
       delayMicroseconds(delaytime);
     }
-
-    if(rotdirection == 1){
-      digitalWrite(intopulse_pin,HIGH);
+    else if(rotdirection == 1){
+      digitalWrite(intopulse_pin_close,HIGH);
       delayMicroseconds(delaytime);
-      digitalWrite(intopulse_pin,LOW);
+      digitalWrite(intopulse_pin_close,LOW);
       delayMicroseconds(delaytime);
     }
     
     //フィードバックパルスを受け取る
+    /*フィードバックしょりは不安定なのでコメントアウト
     if(digitalRead(feedbackpulse_pin) == LOW){  //パルスはLOW
       //一定周期で来るはずのパルスが来なければ
       if(i%long(rounddown*steppercm)!=0){
@@ -107,6 +107,7 @@ void Motor::rotate(bool rotdirection, float centimeter_per_sec, float movingdist
       //Serial.println(i);
       feedback_sum++;
     }
+    */
 
     //センサをチェックする
     if(sensorcheck){
@@ -126,7 +127,8 @@ void Motor::rotate(bool rotdirection, float centimeter_per_sec, float movingdist
     }
     
   }
-  
+
+  /*フィードバック処理は不安定なのでコメントアウト
   //フィードバックでずれの修正
   int feedback_differ = abs(feedback_expected - feedback_sum);
   Serial.print("expectation: ");
@@ -138,13 +140,23 @@ void Motor::rotate(bool rotdirection, float centimeter_per_sec, float movingdist
     if(feedback_expected < feedback_sum){
       //超過なら回転方向を反転
       this->rotdirection *= -1;
-      digitalWrite(rotdirection_pin,this->rotdirection);
+      //digitalWrite(rotdirection_pin,this->rotdirection);//2パルス方式ではこの一行は意味をなさない
     }
     for(int j = 0; j < feedback_differ*(steppercm*rounddown);j++){
-      digitalWrite(intopulse_pin,HIGH);
-      delayMicroseconds(delaytime);
-      digitalWrite(intopulse_pin,LOW);
-      delayMicroseconds(delaytime);
+
+      //パルスを送ってモータを回す
+      if(rotdirection == 0){
+        digitalWrite(intopulse_pin_open,HIGH);
+        delayMicroseconds(delaytime);
+        digitalWrite(intopulse_pin_open,LOW);
+        delayMicroseconds(delaytime);
+      }
+      else if(rotdirection == 1){
+        digitalWrite(intopulse_pin_close,HIGH);
+        delayMicroseconds(delaytime);
+        digitalWrite(intopulse_pin_close,LOW);
+        delayMicroseconds(delaytime);
+      }
 
       if(sensorcheck){
         //1cm進むごとにチェック
@@ -164,10 +176,12 @@ void Motor::rotate(bool rotdirection, float centimeter_per_sec, float movingdist
       }
     }
   }
+  */
   
   return;
 }
 
+/*使っていない間に更新が嵩んで修正できないのでコメントアウト
 void Motor::rotate_easing(bool rotdirection, float centimeter_per_sec, float movingdistance, bool sensorcheck, float easein, float easeout){
 
   this->rotdirection = rotdirection;
@@ -221,3 +235,4 @@ void Motor::rotate_easing(bool rotdirection, float centimeter_per_sec, float mov
   }
 
 }
+*/

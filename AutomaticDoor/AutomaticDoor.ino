@@ -1,5 +1,5 @@
 #include<Arduino.h>
-#include<LiquidCrystal_I2C.h>
+#include"src/libraries/LiquidCrystal_I2C-master/LiquidCrystal_I2C.h"
 #include"Motor.h"
 #include"Usound.h"
 #include"src/libraries/Adafruit_MLX90614_Library/Adafruit_MLX90614.h"
@@ -88,6 +88,10 @@ void loop() {
   //Serial.print(" 温度:");
   //Serial.println(dis);
   if(dis >= 5 && dis <= 15){
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("\xbf\xb8\xc3\xb2\xc1\xad\xb3");
+    
     Serial.println("echo_OK");
     if(tempnum < 4){
       temp[tempnum] = (mlx.readObjectTempC() - (((3.3-3.0)*0.6)) + 2.5);
@@ -99,7 +103,7 @@ void loop() {
     }
     else {
       tempave = (temp[1] + temp[2] + temp[3]) / 3;
-      delay(100);
+      delay(100);//計算に時間がかかるのでdelayを呼ぶ
       Serial.print("平均温度");
       delay(100);
       Serial.println(tempave);

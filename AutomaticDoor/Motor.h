@@ -13,9 +13,9 @@
 
 class Motor{
   private:
-    int feedbackpulse_pin;  //モーターから一定の回転によって送られてくるパルスのピン番号
-    int rotdirection_pin;   //開く
-    int intopulse_pin;      //閉まる
+    int feedbackpulse_pin;    //モーターから一定の回転によって送られてくるパルスのピン番号
+    int intopulse_pin_open;   //開く
+    int intopulse_pin_close;  //閉まる
     
     bool rotdirection;          //回転方向 0で開く 1で閉まる
     float centimeter_per_sec;   //扉を移動させる速度[cm/s]
@@ -32,7 +32,7 @@ class Motor{
     
     // モーターの回転速度と方向を指定し、回す
     void rotate(bool rotdirection, float centimeter_per_sec, float movingdistance, bool sensorcheck);
-    void rotate_easing(bool rotdirection, float centimeter_per_sec, float movingdistance, bool sensorcheck, float easein, float easeout);
+    //void rotate_easing(bool rotdirection, float centimeter_per_sec, float movingdistance, bool sensorcheck, float easein, float easeout);
     void rotate();
     
 };
