@@ -118,9 +118,13 @@ void Motor::rotate(bool rotdirection, float centimeter_per_sec, float movingdist
           //Serial.print(i);
           //Serial.print(" ");
           //Serial.println(PP1_US.echoCatch());
-          while((int)PP1_US.echoCatch() < 70 ||(int)PP2_US.echoCatch() < 70){
+          if((int)PP1_US.echoCatch() < 70 || (int)PP2_US.echoCatch() < 70){
             Serial.println("Someone is between the door");
-            delay(3000);
+            delay(1000);
+            Motor back(this->feedbackpulse_pin,this->intopulse_pin_open,this->intopulse_pin_close);
+            back.rotate(0,this->centimeter_per_sec,(float)(i)*cmperstep,this->sensorcheck);
+            i = 1;
+            delay(5000);
           }
         }
       }
