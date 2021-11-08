@@ -1,8 +1,7 @@
 #include<Arduino.h>
-#include"src/libraries/LiquidCrystal_I2C-master/LiquidCrystal_I2C.h"
+#include<LiquidCrystal_I2C.h>
 #include"Motor.h"
 #include"Usound.h"
-#include"src/libraries/Adafruit_MLX90614_Library/Adafruit_MLX90614.h"
 
 #define MOT_FEEDBACKPULSE_PIN 2
 #define MOT_ROTDIRECTION_PIN 3
@@ -18,7 +17,6 @@
 #define LED1_PIN 13 //緑色LED
 #define LED2_PIN 14 //赤色LED
 
-Adafruit_MLX90614 mlx = Adafruit_MLX90614();
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 void setup() {
@@ -41,8 +39,6 @@ void setup() {
   lcd.init();                      
   lcd.backlight();
   Serial.begin(9600);
-  Serial.println("test");  
-  mlx.begin();  //実行しないとデフォルト値が出続ける
 }
 
 Usound DIS_US(DIS_ECHO_PIN, DIS_TRIG_PIN);
@@ -50,211 +46,55 @@ Usound EX_US(EX_ECHO_PIN, EX_TRIG_PIN);
 Motor M(MOT_FEEDBACKPULSE_PIN, MOT_ROTDIRECTION_PIN, MOT_INTOPULSE_PIN);
 
 float dis;    //温度を測るときの距離
-float temp[4] = {0, 0, 0, 0};  //測定した温度
-int tempnum = 0;  //tempの添え字
-float tempave;  //温度の平均
 float ex_dis = 10.0; //手動開閉のときの距離
 
 void loop() {
-  //本番用
   //LED
   digitalWrite(LED1_PIN,LOW);
   digitalWrite(LED2_PIN,HIGH);
-  
+
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("\xc3\xa6\xb6\xbb\xde\xbc\xc3\xc8");
   
   //手動で内側から開閉する
   ex_dis = EX_US.echoCatch();
-  Serial.print(ex_dis);
   if(0.1 < ex_dis && ex_dis < 3.0){
       //LCD OPEN
       lcd.clear();
       lcd.setCursor(0, 1);
       lcd.print("OPEN");
-      
-      M.rotate(0,25,72,1); //開く
-      delay(1000);
-
+      M.rotate(0,25,81,1); //開く
+      delay(5000);
       //LCD CLOSE
       lcd.clear();
       lcd.setCursor(0, 1);
       lcd.print("CLOSE");
-      
-      M.rotate(1,25,73,1);//閉まる
+      M.rotate(1,25,82,1);//閉まる
       delay(1000);
   }
   dis = DIS_US.echoCatch();
-  Serial.print("人との距離:");
-  Serial.print(DIS_US.echoCatch());
-  //Serial.print(" 温度:");
-  //Serial.println(dis);
-  if(dis >= 5 && dis <= 15){
+  if(dis > 0.1 && dis < 10){
+    //LCD OPEN
     lcd.clear();
-    lcd.setCursor(0, 0);
-    lcd.print("\xbf\xb8\xc3\xb2\xc1\xad\xb3");
-    
-    Serial.println("echo_OK");
-    if(tempnum < 4){
-      temp[tempnum] = (mlx.readObjectTempC() - (((3.3-3.0)*0.6)) + 2.5);
-      Serial.print(tempnum);
-      Serial.print(" 測定温度:");
-      Serial.println(temp[tempnum]);
-      tempnum++;
-      //delay(100);
-    }
-    else {
-      tempave = (temp[1] + temp[2] + temp[3]) / 3;
-      delay(100);//計算に時間がかかるのでdelayを呼ぶ
-      Serial.print("平均温度");
-      delay(100);
-      Serial.println(tempave);
-      if(30 < tempave && tempave < 37.5){
-        //LCD OPEN
-        lcd.clear();
-        lcd.setCursor(0, 0);
-        lcd.print("\xc0\xb2\xb5\xdd");
-        lcd.print(tempave);
-        lcd.print("\xDF");
-        lcd.print("C");
-        lcd.setCursor(0, 1);
-        lcd.print("OPEN");
-        Serial.print("tmp_OK");
-        //LED
-        digitalWrite(LED1_PIN,HIGH);
-        digitalWrite(LED2_PIN,LOW);
-        
-        M.rotate(0,25,72,1); //開く
-
-        //LCD CLOSE
-        lcd.clear();
-        lcd.setCursor(0, 0);
-        lcd.print("\xc0\xb2\xb5\xdd");
-        lcd.print(tempave);
-        lcd.print("\xDF");
-        lcd.print("C");
-        lcd.setCursor(0, 1);
-        lcd.print("CLOSE");
-        //LED
-        digitalWrite(LED1_PIN,LOW);
-        digitalWrite(LED2_PIN,HIGH);
-        delay(5000);
-        //LED
-        digitalWrite(LED1_PIN,HIGH);
-        digitalWrite(LED2_PIN,LOW);
-        
-        M.rotate(1,25,73,1);  //閉まる
-        delay(1000);
-      }
-      else{
-        if(tempave < 30){
-          lcd.clear();
-          lcd.setCursor(0, 0);
-          lcd.print(tempave);
-          lcd.setCursor(0, 1);
-          
-          lcd.print("\xca\xb6\xd8\xc5\xb5\xbc\xc3");
-          delay(1000);
-        }
-        else{
-          //Serial.print("tmp_NG");
-          lcd.clear();
-          lcd.setCursor(0, 0);
-          lcd.print(tempave);
-          lcd.setCursor(0, 1);
-          lcd.print("\xc0\xb2\xb5\xdd\x20\xc0\xb6\xb2\xdc");
-          delay(1000);
-        }
-      }
-      for(int i=0;i<3;i++)temp[i]=0;
-      tempnum = 0;
-    }
-  }
-  //後ろ
-  else if(dis < 5){
+    lcd.setCursor(0, 1);
+    lcd.print("OPEN");
+    //LED
+    digitalWrite(LED1_PIN,HIGH);
+    digitalWrite(LED2_PIN,LOW);
+    M.rotate(0,25,81,1); //開く
+    //LCD CLOSE
     lcd.clear();
-    lcd.setCursor(0, 0);
-    lcd.print("\xb3\xbc\xdb\xc6\xd3\xc4\xde\xda");
+    lcd.setCursor(0, 1);
+    lcd.print("CLOSE");
+    //LED
+    digitalWrite(LED1_PIN,LOW);
+    digitalWrite(LED2_PIN,HIGH);
+    delay(5000);
+    //LED
+    digitalWrite(LED1_PIN,HIGH);
+    digitalWrite(LED2_PIN,LOW);
+    M.rotate(1,25,82,1);  //閉まる
+    delay(1000);
   }
-  //前
-  else if(dis > 15){
-    lcd.clear();
-    lcd.setCursor(0, 0);
-    lcd.print("\xcf\xb4\xcd\xbd\xbd\xd2");
-  }
-  Serial.println(" ");
-  
- 
-  //ドア往復するだけ
-  /*
-  M.rotate(0,20,60,0); //開く
-  delay(1000);
-  M.rotate(1,10,60,0);//閉まる
-  delay(1000);
-  */
-  
-  //Serial.print(b);
-  //超音波センサ実行プログラム
-  /*
-  Serial.print("distance: ");
-  Serial.print(US.echoCatch());
-  Serial.println("cm");
-  */
-  
-  //モータの実行プログラム
-  /*
-  Motor M(MOT_FEEDBACKPULSE_PIN, MOT_ROTDIRECTION_PIN, MOT_INTOPULSE_PIN);
-  if(y){
-    M.rotate(1,10,10);
-    y=false;
-  }
-  */
-  
- 
-  //PIRセンサの実行プログラム
-  /*
-  if(digitalRead(PIR_PIN) == HIGH)Serial.println("HIGH");
-  else Serial.println("Low");
-  */
-
-  //温度センサの実行プログラム
-  /*
-  Serial.print("Ambient = ");
-  Serial.print(mlx.getAmbientTemperature()); 
-  Serial.println("*C");
-  Serial.print("Object = ");
-  Serial.print(mlx.getObjectTemperature());
-  Serial.println("*C");
-  Serial.println();
-  delay(1000);
-  */
-
-  
-  
-  /*
-  //廊下→教室のプログラム
-  digitalWrite(TRIG_PIN,HIGH);
-  for(){
-    if(10 <= US.echoCatch()){
-      digitalWrite(BLUE_PIN,HIGH);
-      delay(3000);
-      if(T.getObjectTemperature() < 37.5){
-        digitalWrite(GREEN_PIN,HIGH);
-        //モーター割り込み
-        digitalWrite(BLUE_PIN,LOW);
-        digitalWrite(GREEN_PIN,LOW);
-        }
-        
-      else{
-        digitalWrite(BLUE_PIN,LOW);
-        digitalWrite(RED_PIN,HIGH);
-        delay(2000);
-        digitalWrite(RED_PIN,LOW);
-      }
-      
-    }
-  }
-
-  //教室→廊下のプログラム
-   if(digitalRead(PIR_PIN) == HIGH)Serial.println("HIGH");
-  else Serial.println("Low");
-  */
 }
